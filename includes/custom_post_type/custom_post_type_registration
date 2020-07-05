@@ -1,0 +1,38 @@
+<?php
+
+/*
+ *
+ * Registering Custom Post Type Courses with Wordpress
+ *
+ */
+
+function gmc_courses() {
+
+    register_post_type('course', array(
+        'has_archive'=> false , // Single page to display all posts from this category
+        'rewrite'=> array('slug'=>'courses'),
+        'supports'=> array('title',
+            'editor', // Editor
+            'excerpt', // Excerpts
+            'custom-fields', // Custom Fields
+            'thumbnail', // Featured Image
+//            'show_in_rest',
+//            'post-formats',
+//            'trackbacks'
+        ),
+        'public' => true,
+        'labels' => array('name'=> 'Courses',
+            'add_new_item'=>'Add New Course',
+            'edit_item'=>'Edit Course',
+            'all_items'=>'All Courses',
+            'singular_name'=>'Course',
+        ),
+
+        'menu_icon' => 'dashicons-edit-large',
+//        'taxonomies' => array( 'topics','category','post_tag' ), // Add category choose
+
+    ));
+    flush_rewrite_rules( true );  //Refreshes Permalinks
+}
+
+add_action( 'init', 'gmc_courses' );

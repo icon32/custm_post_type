@@ -1,0 +1,49 @@
+<?php
+
+/*
+*
+* All Courses Shortcode
+* Shortcode :   [gmc_display_custom post_type="" category=""]
+*
+*/
+
+function gmc_shortcode($attr) {
+
+    global $post;
+
+
+    $options = shortcode_atts(array(   //extracting the arguments
+        'category'=>'', // Post Category
+        'post_type'=>'course' // Post Type
+    ), $attr);
+
+    $args = array(   // How to select the post type
+        'post_type' => $options['post_type'],
+        'course_category' => $options['category'],
+        'posts_per_page'   => -1,
+        'meta_key'			=> 'id2',  // order by posts custom field
+        'orderby'			=> 'meta_key', // the custom field
+        'order'				=>  'ASC', // ascending order
+    );
+
+    $output = '';
+
+    $posts = get_posts($args);  //get the posts
+    $count = '0';
+
+    foreach($posts as $post) {
+        $count += 1;
+        setup_postdata($post);
+
+        $output .= '<li><div class="av-catalogue-item"><div class="av-catalogue-item-inner"><div class="av-catalogue-title-container"><a href="'. get_the_permalink() .'">' .$count . '. ' . get_the_title() .'</a></div></div></div></li>';
+
+    }
+
+    wp_reset_postdata();
+
+    return '<div class="av-catalogue-container   avia-builder-el-21  avia-builder-el-no-sibling "> <ul class="av-catalogue-list">'. $output .'</div></ul>';
+
+}
+
+
+add_shortcode('gmc_display_custom', 'gmc_shortcode');
